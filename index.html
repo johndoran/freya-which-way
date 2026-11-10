@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which way? A college decision workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1F4F2; --surface:#FFFFFF; --ink:#18212B; --muted:#5B6672; --line:#D9DFDC; --soft:#E7EDEA;
+  --accent:#18212B; --accent-ink:#FFFFFF;
+  --dcu:#B35F00; --marino:#1D7A52; --tcd:#3556A8;
+  --dcu-soft:#FBEBD3; --marino-soft:#D9F0E4; --tcd-soft:#DEE6F8;
+  --warn-bg:#FFF4D9; --warn-line:#E5BF62;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10161C; --surface:#18212A; --ink:#EDF1F3; --muted:#9CA8B3; --line:#2B3742; --soft:#202B35;
+    --accent:#EDF1F3; --accent-ink:#10161C;
+    --dcu:#F0A650; --marino:#5CCB98; --tcd:#8FA9EC;
+    --dcu-soft:#3B2A12; --marino-soft:#123224; --tcd-soft:#1E2A4A;
+    --warn-bg:#352B14; --warn-line:#6E5A24;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10161C; --surface:#18212A; --ink:#EDF1F3; --muted:#9CA8B3; --line:#2B3742; --soft:#202B35;
+  --accent:#EDF1F3; --accent-ink:#10161C;
+  --dcu:#F0A650; --marino:#5CCB98; --tcd:#8FA9EC;
+  --dcu-soft:#3B2A12; --marino-soft:#123224; --tcd-soft:#1E2A4A;
+  --warn-bg:#352B14; --warn-line:#6E5A24;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-family:"Bricolage Grotesque","Figtree",system-ui,sans-serif;line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:700}
+h2{font-size:clamp(1.5rem,4.2vw,2rem);font-weight:700}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 .8em;max-width:62ch}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--tcd);outline-offset:2px}
+.wrap{max-width:780px;margin:0 auto;padding:18px 16px 56px}
+
+/* header + steps */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.brand{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.05rem}
+.steps{display:flex;gap:6px;overflow-x:auto;padding:6px 2px 12px;margin-bottom:6px;scrollbar-width:thin}
+.steps button{flex:0 0 auto;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:.88rem;color:var(--muted);white-space:nowrap}
+.steps button[aria-current="step"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.steps button.done{color:var(--ink)}
+.mode{display:flex;gap:0;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.mode button{border:0;background:none;padding:6px 12px;font-size:.85rem;color:var(--muted)}
+.mode button[aria-pressed="true"]{background:var(--ink);color:var(--bg);font-weight:600}
+
+/* panels */
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:22px 20px;margin-bottom:16px}
+.lede{font-size:1.1rem;color:var(--muted)}
+.banner{background:var(--tcd-soft);border:1.5px solid var(--tcd);border-radius:14px;padding:10px 14px;margin-bottom:14px;font-size:.95rem}
+.banner.parent{background:var(--warn-bg);border-color:var(--warn-line)}
+
+/* questions */
+.q{padding:18px 0;border-top:1.5px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .t{font-weight:600;margin-bottom:4px;max-width:58ch}
+.q .h{color:var(--muted);font-size:.92rem;margin-bottom:10px}
+.sc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.sc button{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 0;font-weight:600;font-size:1.05rem;min-height:48px;transition:background .12s,border-color .12s,transform .12s}
+.sc button:hover{border-color:var(--ink)}
+.sc button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:translateY(-2px)}
+.ends{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-top:6px}
+.field{margin:0 0 20px}
+.field label{display:block;font-weight:600;margin-bottom:6px;max-width:58ch}
+textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+textarea{min-height:92px;resize:vertical}
+
+/* nav */
+.foot{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+.btn{border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:999px;padding:12px 22px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.small{padding:7px 14px;font-size:.9rem}
+.btn:hover{filter:brightness(1.12)}
+
+/* ranking + cao rows */
+.rows{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:8px}
+.row{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--bg)}
+.row .pos{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.3rem;width:1.6rem;text-align:center;flex:none}
+.row .body{flex:1;min-width:0}
+.row .name{font-weight:600}
+.row .sub{font-size:.88rem;color:var(--muted)}
+.row .ctl{display:flex;gap:4px;flex:none}
+.ic{border:1.5px solid var(--line);background:var(--surface);border-radius:10px;width:40px;height:40px;font-size:1rem}
+.ic:hover{border-color:var(--ink)}
+.chip{display:inline-block;font-size:.78rem;border-radius:999px;padding:1px 9px;background:var(--soft);margin:3px 4px 0 0;color:var(--muted)}
+.dot{display:inline-block;width:.7em;height:.7em;border-radius:50%;margin-right:6px}
+
+/* results */
+.score{border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;background:var(--bg)}
+.score header{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.score .num{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:2.2rem}
+.score .num small{font-size:1rem;color:var(--muted);font-weight:500}
+.bar{height:12px;border-radius:999px;background:var(--soft);overflow:hidden;margin:8px 0 12px}
+.bar i{display:block;height:100%;border-radius:999px;transition:width .5s}
+.score ul{margin:.2em 0 .6em;padding-left:1.1em}
+.score li{margin:.15em 0}
+.callout{border-left:5px solid var(--warn-line);background:var(--warn-bg);border-radius:0 12px 12px 0;padding:12px 14px;margin-bottom:12px}
+.callout strong{display:block;margin-bottom:2px}
+.callout p{margin:.2em 0}
+.ask{font-style:italic;color:var(--muted)}
+.quote{border-left:4px solid var(--line);padding:2px 12px;margin:6px 0;color:var(--muted);white-space:pre-wrap}
+details{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;background:var(--bg)}
+summary{cursor:pointer;font-weight:600}
+details p{margin-top:8px}
+.checks label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1.5px solid var(--line);cursor:pointer}
+.checks label:first-child{border-top:0}
+.checks input{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--marino)}
+.checks .done{color:var(--muted);text-decoration:line-through}
+.checks small{display:block;color:var(--muted)}
+.opts{display:grid;gap:10px;margin:16px 0}
+@media (min-width:640px){.opts{grid-template-columns:repeat(3,1fr)}}
+.opt{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;border-top-width:6px;background:var(--bg)}
+.opt b{display:block;margin-bottom:2px}
+.opt span{font-size:.9rem;color:var(--muted)}
+textarea.summary{min-height:260px;font-size:.9rem}
+.note{font-size:.9rem;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tabs button{border:1.5px solid var(--line);background:var(--bg);border-radius:999px;padding:8px 14px;font-weight:600}
+.tabs button[aria-pressed="true"]{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+.glance{display:grid;gap:10px;margin:14px 0}
+@media (min-width:640px){.glance{grid-template-columns:repeat(3,1fr)}}
+.g{border:1.5px solid var(--line);border-top-width:6px;border-radius:14px;padding:12px 14px;background:var(--bg)}
+.g .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.9rem;line-height:1.1;margin-top:2px}
+.g .big small{display:block;font-family:"Figtree",sans-serif;font-size:.85rem;color:var(--muted);font-weight:500}
+.g dl{margin:8px 0 0}.g dt{font-size:.8rem;color:var(--muted)}.g dd{margin:0 0 6px;font-size:.93rem}
+.kv h3{margin-top:20px}
+.kv ul{margin:.3em 0 .8em;padding-left:1.2em}.kv li{margin:.3em 0;max-width:64ch}
+a{color:var(--tcd);text-underline-offset:3px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.links a{border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.92rem;text-decoration:none;color:var(--ink);background:var(--bg)}
+.links a:hover{border-color:var(--ink)}
+.tl .when{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.15rem;margin-top:26px;padding-bottom:6px;border-bottom:1.5px solid var(--line)}
+.tl .when small{display:block;font-family:"Figtree",sans-serif;font-weight:400;color:var(--muted);font-size:.88rem}
+.lanes{display:grid;gap:8px;margin-top:8px}
+@media (min-width:700px){.lanes{grid-template-columns:repeat(3,1fr)}}
+.lane{border-left:6px solid var(--line);padding:8px 12px;font-size:.93rem;background:var(--bg);border-radius:0 12px 12px 0}
+.lane b{display:block;font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:2px}
+.day{border:1.5px solid var(--line);border-top-width:6px;border-radius:14px;padding:12px 14px;background:var(--bg);margin-bottom:10px}
+.day ul{margin:.3em 0;padding-left:1.1em}.day li{margin:.25em 0}
+.scroll{overflow-x:auto}
+.gl dt{font-weight:600;margin-top:12px}
+.gl dd{margin:2px 0 0;color:var(--muted);max-width:64ch}
+.what{border:1.5px solid var(--line);border-top-width:6px;border-radius:14px;padding:14px 16px;background:var(--bg);margin-bottom:12px}
+.what h3{margin-bottom:.2em}
+.what .one{font-size:1.05rem;font-weight:600;margin:.2em 0 .6em;max-width:56ch}
+.what ul{margin:.2em 0;padding-left:1.2em}.what li{margin:.3em 0;max-width:62ch}
+.big3 p{margin:.5em 0}
+table.cmp{width:100%;border-collapse:collapse;font-size:.92rem;min-width:520px}
+table.cmp th,table.cmp td{border-top:1.5px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
+table.cmp th{font-weight:600}
+.sr{position:absolute;left:-9999px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:480px){body{font-size:16px}.panel{padding:18px 14px}.row{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Which way?</div>
+    <div class="mode" role="group" aria-label="Who is answering">
+      <button type="button" data-act="mode" data-v="me" aria-pressed="true">I’m answering</button>
+      <button type="button" data-act="mode" data-v="parent" aria-pressed="false">Parent view</button>
+    </div>
+  </div>
+  <nav class="steps" id="steps" aria-label="Steps"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- data ---------- */
+var OPT={
+  dcu:{name:"Primary Teaching, DCU / St Patrick’s",short:"DCU Primary Teaching",code:"DC002",color:"var(--dcu)",soft:"var(--dcu-soft)",
+       line:"4 years. Your own class of about 25, many subjects, school placements. Taught in English; Irish is a requirement but not the language of the course. 473 points in 2026."},
+  marino:{name:"Primary Teaching through Irish, Marino",short:"Marino (through Irish)",code:"CM003",color:"var(--marino)",soft:"var(--marino-soft)",
+       line:"4 years. Teaching as above, but almost entirely through Irish, with placements in Irish-medium schools. H3 Irish plus TEG B1 required. 503 points in 2026, including 40 for TEG B1."},
+  tcd:{name:"Clinical Speech & Language Studies, Trinity",short:"Trinity Speech & Language Therapy",code:"TR007",color:"var(--tcd)",soft:"var(--tcd-soft)",
+       line:"4 years, about 34 places. Healthcare and science: anatomy, neurology, linguistics, statistics. Clinical placements in hospitals, clinics and schools. 555 points in 2026."}
+};
+var KEYS=["dcu","marino","tcd"];
+
+var SECTIONS=[
+ {id:"kids",title:"Kids and classrooms",intro:"Rate each from 1 (not me at all) to 5 (totally me). Think of real moments, not how you feel you should answer.",qs:[
+  {id:"k1",text:"I genuinely enjoy being around younger kids (about 5 to 12) for long stretches.",short:"being around younger kids for long stretches",hint:"Babysitting, coaching, camps, cousins. How did you feel at the end of it?"},
+  {id:"k2",text:"I’d enjoy being the one in charge of a whole class of about 25, every single day.",short:"being in charge of a whole class of 25",hint:"Setting the tone, keeping order, deciding what happens next."},
+  {id:"k3",text:"Teaching lots of different subjects in one day (maths, Irish, art, PE, science) sounds fun.",short:"teaching many different subjects in one day"},
+  {id:"k4",text:"Spending a whole school year building a relationship with the same group of children appeals to me.",short:"a year-long relationship with the same class"},
+  {id:"p6",text:"I’m fine with noisy, busy, high-energy rooms all day.",short:"noisy, high-energy rooms",hint:"A primary classroom is rarely quiet."}
+ ]},
+ {id:"irish",title:"Irish",intro:"This matters mostly for Marino, but be honest about it either way.",qs:[
+  {id:"i1",text:"I genuinely like Irish as a subject. Not just for the points.",short:"genuinely liking Irish"},
+  {id:"i2",text:"I’d be happy to study at college almost entirely through Irish: lectures, reading, essays, placements.",short:"studying almost entirely through Irish",hint:"Four years, every day, including academic reading and writing."},
+  {id:"i3",text:"I’d like Irish to be part of my everyday working life.",short:"using Irish in everyday working life"},
+  {id:"i4",text:"I feel confident having a real, unscripted conversation in Irish.",short:"speaking Irish in real conversation",hint:"Different from writing a good essay."}
+ ]},
+ {id:"science",title:"Science and thinking style",intro:"What kind of problems do you like working on?",qs:[
+  {id:"s1",text:"I like biology and how the human body works.",short:"biology and how the body works"},
+  {id:"s2",text:"I’m comfortable with science-heavy content: anatomy, neurology, statistics.",short:"science-heavy content like anatomy, neurology and statistics",hint:"Speech and language therapy includes these from early on."},
+  {id:"s3",text:"Psychology and how people develop and learn fascinates me.",short:"psychology and human development"},
+  {id:"s4",text:"Language itself fascinates me: how speech sounds are made, how children learn to talk, why words go wrong.",short:"how speech and language work"},
+  {id:"p4",text:"I enjoy working out what’s causing a problem, then making a plan to fix it.",short:"working out the cause of a problem and making a plan"}
+ ]},
+ {id:"people",title:"How you like working with people",intro:"Picture the working day, not the title.",qs:[
+  {id:"p1",text:"I prefer working one-to-one or in small groups over big groups.",short:"one-to-one or small-group work",rev:true},
+  {id:"p2",text:"Hospitals and clinics feel like places I’d be comfortable working.",short:"hospital and clinic settings"},
+  {id:"p3",text:"I’d be happy working with adults as well as children (for example after a stroke).",short:"working with adults as well as children"},
+  {id:"p5",text:"I can stay caring and steady around serious illness, disability or distress.",short:"staying steady around illness, disability and distress"}
+ ]},
+ {id:"life",title:"Working life",intro:"The practical side. These are real differences between the careers, so be honest about what matters to you.",qs:[
+  {id:"w1",text:"A school-year rhythm with long holidays matters a lot to me.",short:"a school-year rhythm with long holidays"},
+  {id:"w2",text:"Job security matters a lot to me.",short:"job security"},
+  {id:"w3",text:"I want a career that lets me live and work in lots of different places, here or abroad.",short:"flexibility to work in different places"},
+  {id:"w4",text:"I’d like a career where I can specialise and move up over time.",short:"specialising and progressing"},
+  {id:"w5",text:"I’m happy with a lot of writing, reports and evidence-based reasoning.",short:"reports, writing and evidence-based reasoning"}
+ ]}
+];
+
+var WORDS=[
+ {id:"goodDay",label:"Describe a really good day. Not a career, just what you’re doing and who you’re with."},
+ {id:"dread",label:"What do you dread? Subjects, situations, types of work."},
+ {id:"workingDay",label:"In ten years, what do you want a normal working day to feel like?"},
+ {id:"dealbreakers",label:"What do you definitely NOT want from a career?"},
+ {id:"college",label:"What do you want college life to be like? (City, size, friends, independence.)"},
+ {id:"whyTeach",label:"If teaching appeals, what exactly would you enjoy about it?"},
+ {id:"whySLT",label:"If speech and language therapy appeals, what exactly would you enjoy about it?"},
+ {id:"whyIrish",label:"If Irish appeals as part of your career, why?"}
+];
+
+var QMAP={},ALLQ=[];
+SECTIONS.forEach(function(s){s.qs.forEach(function(q){QMAP[q.id]=q;ALLQ.push(q)})});
+
+/* positive weight: higher answer fits. negative: lower answer fits */
+var WEIGHTS={
+ dcu:{k1:3,k2:3,k3:2,k4:2,p6:1,s3:1,w1:1,p1:-1},
+ marino:{k1:3,k2:3,k3:2,k4:2,p6:1,s3:1,w1:1,p1:-1,i1:3,i2:4,i3:3,i4:2},
+ tcd:{s1:2,s2:3,s3:2,s4:3,p4:3,p1:2,p2:2,p3:2,p5:2,k1:1,w4:1,w5:1}
+};
+var DEFAULT_RES={
+ dcu:"Check what managing 25 children, plus the planning and paperwork around it, is really like.",
+ marino:"The course and the career run in Irish, so it needs sustained enjoyment of working in Irish.",
+ tcd:"It’s a science-heavy degree with clinical placements, much more healthcare than classroom."
+};
+
+var STEPS=[
+ {id:"welcome",label:"Start"},{id:"explain",label:"What they are"},{id:"courses",label:"Courses"},{id:"future",label:"Future"},{id:"kids",label:"Kids"},{id:"irish",label:"Irish"},{id:"science",label:"Science"},
+ {id:"people",label:"People"},{id:"life",label:"Work life"},{id:"words",label:"In your words"},{id:"gut",label:"Gut check"},
+ {id:"results",label:"Results"},{id:"try",label:"Try it"},{id:"cao",label:"CAO list"}
+];
+
+var BANDS=[["","Not sure yet"],["u400","Under 400"],["400","400 to 450"],["450","450 to 500"],["500","500 to 550"],["550","550 or more"]];
+
+var CAOITEMS={
+ dcu:{name:OPT.dcu.name,level:8,keeps:["kids","teaching"],note:"DC002. 473 points in 2026."},
+ marino:{name:OPT.marino.name,level:8,keeps:["kids","teaching","irish"],note:"CM003. 503 points in 2026, including 40 for TEG B1."},
+ tcd:{name:OPT.tcd.name,level:8,keeps:["clinical","science","language","psychology"],note:"TR007. 555 points in 2026."},
+ mic005:{name:"Primary Teaching at Mary Immaculate College, Limerick",level:8,keeps:["kids","teaching"],note:"MI005. 475 points in 2026. Same career, different campus."},
+ mic008:{name:"Education and Psychology (Primary Teaching) at Mary Immaculate College, Limerick",level:8,keeps:["kids","teaching","psychology"],note:"MI008. 554 points in 2026. Primary teaching with a psychology strand."},
+ froebel:{name:"Primary Teaching (Froebel) at Maynooth University",level:8,keeps:["kids","teaching"],note:"MH001. 495 points in 2026."},
+ cm001:{name:"Primary Teaching in English at Marino Institute of Education",level:8,keeps:["kids","teaching"],note:"CM001. 462 points in 2026. Marino, without the Irish-medium requirement."},
+ ucc:{name:"Speech and Language Therapy at University College Cork",level:8,keeps:["clinical","science","language","psychology"],note:"CK705. 555 points in 2026 (random selection among those on that score)."},
+ gal:{name:"Speech and Language Therapy at University of Galway",level:8,keeps:["clinical","science","language","psychology"],note:"GY503. 542 points in 2026."},
+ ul:{name:"Speech and Language Therapy at University of Limerick",level:8,keeps:["clinical","science","language","psychology"],note:"LM106. 544 points in 2026. New in 2026: check its CORU approval status first."},
+ psych:{name:"Psychology (BA or BSc)",level:8,keeps:["psychology","science"],note:"Examples, 2026: Limerick LM102 500, Galway GY104 534, DCU DC208 532, UCC CK120 543. Postgraduate routes exist into teaching and clinical fields. Check what each needs."},
+ ece8:{name:"Early Childhood Education (Level 8)",level:8,keeps:["kids","psychology"],note:"Examples, 2026: DCU DC001 410, Maynooth MH003 366, Mary Immaculate MI007 388. Young children and development."},
+ ot:{name:"Occupational Therapy",level:8,keeps:["clinical","science"],note:"Examples, 2026: Galway GY502 542, Limerick LM104 542, Trinity TR054 543, UCC CK704 566. Assess, treat and work with people, in a different profession."},
+ artsIrish:{name:"Arts or Humanities with Irish plus psychology or linguistics",level:8,keeps:["irish","language","psychology"],note:"A broad route that keeps Irish and language. A Level 8 degree can lead to the postgraduate primary teaching route (PME). DCU and Marino both run one, so check entry rules."},
+ ece7:{name:"Early Childhood or Social Care (Level 7 / 6)",level:7,keeps:["kids"],note:"A safety net on the separate Level 7/6 list, often with progression to Level 8."}
+};
+var KEEPNAMES={kids:"Kids",teaching:"Teaching",irish:"Irish",science:"Science",clinical:"Clinical",psychology:"Psychology",language:"Language"};
+
+var TRY=[
+ {id:"classroom",t:"Spend a morning in a primary classroom.",s:"Try your old primary school, or a family friend who teaches. Ask to see the afternoon too, not only the fun bits."},
+ {id:"teacher",t:"Ask a teacher about the planning, paperwork and hard days.",s:"What does their Sunday evening look like? What would they tell their 17-year-old self?"},
+ {id:"kidstime",t:"Get hands-on time with kids: coaching, a summer camp, babysitting a full day.",s:"Notice how you feel at 5pm, not at 10am."},
+ {id:"slt",t:"Talk to a speech and language therapist, or shadow one if you can.",s:"Local clinics, schools and family contacts are all ways in. Ask what a normal Tuesday looks like and what the paperwork is like."},
+ {id:"tcd",t:"Go to a Trinity open day or chat to a TR007 student.",s:"Ask what the first two years actually feel like, and about the science."},
+ {id:"modules",t:"Read the actual first-year module list for each course.",s:"Which ones make you curious, and which make you tired just reading them?"},
+ {id:"science",t:"Try a taste of the science.",s:"Watch a few anatomy and phonetics lectures online. Do you want to keep going?"},
+ {id:"irish",t:"Do a week of Irish out loud.",s:"TG4, Irish-language podcasts, an Irish-speaking friend. If you’re eyeing Marino, ask to speak with a Gaelscoil teacher or a Marino student too, and look up what the TEG B1 oral involves."},
+ {id:"compare",t:"Sit down with your parent and go through “Where you two see things differently”.",s:"Not to win. Just to hear each other."}
+];
+
+/* ---------- state ---------- */
+var STORE="whichWay_v1";
+var S={step:0,mode:"me",a:{},pa:{},t:{},gut:KEYS.slice(),gutSet:false,ctab:"dcu",band:"",risk:3,cao:[],caoInit:false,checks:{},why:"",resetArm:false};
+(function(){try{var raw=localStorage.getItem(STORE);if(raw){var o=JSON.parse(raw);for(var k in o){S[k]=o[k]}}}catch(e){}})();
+S.resetArm=false;
+function save(){try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}}
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]})}
+function g(id){var v=S.a[id];return v==null?null:v}
+function ans(){return S.mode==="parent"?S.pa:S.a}
+function $(s){return document.querySelector(s)}
+
+/* ---------- scoring ---------- */
+function scoreOpt(key){
+  var W=WEIGHTS[key],num=0,den=0,ups=[],downs=[],n=0,tot=0,id;
+  for(id in W){
+    tot++;var v=S.a[id];if(v==null)continue;n++;
+    var w=W[id],aw=Math.abs(w),m=w<0?1-(v-1)/4:(v-1)/4;
+    num+=aw*m;den+=aw;
+    if(w>0&&!QMAP[id].rev){
+      if(v>=4)ups.push({id:id,v:v,p:aw*m});
+      else if(v<=2)downs.push({id:id,v:v,p:aw*(1-m)});
+    }
+  }
+  var score=den?10*num/den:null,gate=false;
+  if(key==="marino"&&score!=null&&((g("i1")!=null&&g("i1")<=2)||(g("i2")!=null&&g("i2")<=2))){gate=true;score=Math.min(score,4.5)}
+  ups.sort(function(a,b){return b.p-a.p});downs.sort(function(a,b){return b.p-a.p});
+  return {score:score,ups:ups,downs:downs,gate:gate,n:n,tot:tot};
+}
+function compute(){var r={};KEYS.forEach(function(k){r[k]=scoreOpt(k)});return r}
+function orderByScore(){
+  var r=compute();
+  return KEYS.slice().sort(function(a,b){return (r[b].score==null?-1:r[b].score)-(r[a].score==null?-1:r[a].score)});
+}
+
+/* ---------- reality checks ---------- */
+function checks(){
+  var out=[],k1=g("k1"),k2=g("k2"),k3=g("k3"),p6=g("p6"),i1=g("i1"),i2=g("i2"),i4=g("i4"),s1=g("s1"),s2=g("s2"),p1=g("p1"),p2=g("p2"),p3=g("p3"),p5=g("p5"),w1=g("w1"),w2=g("w2"),w3=g("w3"),p4=g("p4");
+  function add(t,b,a){out.push({t:t,b:b,a:a})}
+  if(k1>=4&&k2!=null&&k2<=2)add("Liking kids and running a class of 25 are different things.","Plenty of people love children but find managing a whole room all day draining. Teaching is largely about leading a group, not just enjoying individual children.","When did you last have to keep a whole group of kids in order? How did that feel?");
+  if(k1>=4&&k2>=4&&s2>=4&&p4>=4)add("You scored high for both worlds.","That’s a good problem to have, and it’s exactly why the “Try it” step matters. On paper you can’t separate them.","Which would you rather spend a whole day doing: leading a class, or assessing one person and planning their treatment?");
+  if(s2!=null&&s2<=2)add("Speech and language therapy is a science degree first.","Expect anatomy, physiology, neurology and statistics from early on, and evidence-based reasoning throughout. If the appeal is “helping kids”, teaching and special education do that with far less science.","What is it about helping children communicate that appeals? Would you still want it with the science?");
+  if(i1>=4&&i4!=null&&i4<=2)add("Exam Irish and spoken Irish are different skills.","You like Irish, but you don’t yet feel confident talking in it. A course taught almost entirely through Irish needs both the reading and writing and the everyday speaking.","What would a week of only speaking Irish be like for you?");
+  if(i2!=null&&i2<=3)add("Marino is Irish nearly all day, for four years.","Lectures, reading, essays and placements are largely in Irish. A middling answer here is worth taking seriously, because it won’t change once the course starts.","Could you picture a bad-brain-day, tired Wednesday afternoon in Irish? Still happy?");
+  if(S.gut&&S.gut[0]==="marino"&&S.gutSet&&((i1!=null&&i1<=3)||(i2!=null&&i2<=3)))add("Your gut put Marino first, but your Irish answers are lukewarm.","That mismatch is worth looking at. Is it the Irish you want, or something else about the course, like the points or the career?","If Marino and DCU had the same points, which would you pick, and why?");
+  if(p1>=4&&k2>=4)add("You like small groups and running a big class. Which is it?","Primary teaching includes group work, but it is mostly whole-class. Speech and language therapy is mostly one-to-one or small groups.","Which do you picture when you imagine your best day at work?");
+  if(p6!=null&&p6<=2&&k2!=null&&k2>=3)add("Primary classrooms are loud and constant.","If you need quiet to recharge, notice how you feel after an hour in a busy room full of children.","Spend a morning in a real classroom before deciding.");
+  if(w1>=4)add("The holidays are real, but they’re not the whole story.","Teachers have long breaks, but planning, correcting, meetings and contact with parents spill outside the school day. Therapists in the health service have structured annual leave, not school holidays. Weigh this honestly.","If the holidays were the same in both, which would you choose?");
+  if(p2!=null&&p2<=2&&s2!=null&&s2>=3)add("Speech and language therapy isn’t only hospitals.","Placements and jobs include schools, community clinics and early-intervention teams as well as hospitals, but clinical settings are part of the work.","Is it hospitals you dislike, or something about them? (smell, illness, noise)");
+  if(p5!=null&&p5<=2)add("Therapy work can be emotionally heavy.","Speech and language therapists work with people who’ve had strokes, who live with disability, or who struggle to swallow. Teachers also meet tough situations, but the clinical side is a different kind of intensity.","How do you cope when someone you care about is struggling?");
+  if(k1>=4&&p3>=4&&s2>=3)add("You might enjoy the breadth of speech and language therapy.","It lets you work with children and adults, in lots of settings, and you’re signalling you’d like that variety.","Do you want to work only with children, or is variety part of the appeal?");
+  if(w2>=4)add("Job security isn’t a clear difference between these.","Both are regulated professions with real demand in Ireland, though early careers in each can include temporary or contract work. Check the current picture.","If security is roughly equal, what separates them for you?");
+  if(w3>=4)add("Both qualifications travel, with caveats.","Teachers register with the Teaching Council, and therapists with CORU. Working abroad depends on the country’s recognition, and Irish-medium teaching is narrower. Check this before leaning on it.","Where would you realistically like to live in ten years?");
+  return out;
+}
+function wordChecks(){
+  var out=[],t=S.t;
+  if(t.whySLT&&/\b(play|fun|cute|games?)\b/i.test(t.whySLT))out.push({q:"whySLT",t:"Is it really mostly play?",b:"Sessions can look like play, but the job is clinical: assessing, working out the cause, tracking evidence, writing reports and working with families. Does that still appeal?"});
+  if(t.whyTeach&&/\b(holiday|summer|off)\b/i.test(t.whyTeach))out.push({q:"whyTeach",t:"The holidays came up.",b:"They’re a real perk. But what would you enjoy about the other 190 or so days? Describe a Tuesday in February."});
+  if(t.whyIrish&&/\b(points?|bonus)\b/i.test(t.whyIrish))out.push({q:"whyIrish",t:"Bonus points are a reason to sit the TEG.",b:"They’re not a reason to spend four years studying in Irish. If points are the main thing, it’s worth saying so out loud."});
+  if(t.whySLT&&/\b(only|just|mainly)\b.*\bkids?|children\b/i.test(t.whySLT)&&(g("p3")!=null&&g("p3")<=2))out.push({q:"whySLT",t:"Adults are a big part of the job.",b:"Many therapists work mostly with adults after strokes or with neurological conditions. If you’d only want children, ask a therapist how much choice you have."});
+  return out;
+}
+function parentDiffs(){
+  var d=[];ALLQ.forEach(function(q){var a=S.a[q.id],b=S.pa[q.id];if(a!=null&&b!=null&&Math.abs(a-b)>=2)d.push({q:q,a:a,b:b})});return d;
+}
+
+/* ---------- views ---------- */
+function scale(q){
+  var cur=ans()[q.id],h="<div class='sc' role='group' aria-label='"+esc(q.short)+" (1 to 5)'>";
+  for(var i=1;i<=5;i++)h+="<button type='button' data-act='scale' data-q='"+q.id+"' data-v='"+i+"' aria-pressed='"+(cur===i)+"'>"+i+"</button>";
+  return h+"</div><div class='ends'><span>Not me at all</span><span>Totally me</span></div>";
+}
+function banner(){
+  if(S.mode==="parent")return "<div class='banner parent'><b>Parent view.</b> Answer as you think she would, not as you’d like her to. Her own answers stay separate, and you’ll compare them at the end.</div>";
+  return "";
+}
+function viewWelcome(){
+  return "<div class='panel'><h1>Which way?</h1><p class='lede'>A workbook for working out which of these three courses actually fits you, before points come into it.</p>"+
+  "<div class='opts'>"+KEYS.map(function(k){var o=OPT[k];return "<div class='opt' style='border-top-color:"+o.color+"'><b>"+esc(o.short)+"</b><span>"+esc(o.code)+". "+esc(o.line)+"</span></div>"}).join("")+"</div>"+
+  "<h3>How it works</h3>"+
+  "<p>First comes a plain-English explainer of what each course is, then the facts about each one and a picture of how each future could look. Then you answer some quick questions, write a few things in your own words, and make a gut-feeling ranking. The tool then shows how your answers line up with each course, points out places where your reasons might not match the reality of the job, and helps you build a CAO list in the order you actually want.</p>"+
+  "<p>Nothing here is a verdict. The scores are a way to start a conversation. Your answers save in this browser, so you can come back to it.</p>"+
+  "<p class='note'>Parent: use the “Parent view” switch (top right) to answer as you see her. At the end you’ll see where you two differ, which is usually the best conversation.</p>"+
+  "<div class='foot'><span></span><button class='btn' type='button' data-act='next'>Let’s start</button></div></div>";
+}
+function viewSection(sec){
+  return "<div class='panel'>"+banner()+"<h2>"+esc(sec.title)+"</h2><p class='lede'>"+esc(sec.intro)+"</p>"+
+  sec.qs.map(function(q){return "<div class='q'><div class='t'>"+esc(q.text)+"</div>"+(q.hint?"<div class='h'>"+esc(q.hint)+"</div>":"")+scale(q)+"</div>"}).join("")+foot()+"</div>";
+}
+function viewWords(){
+  return "<div class='panel'><h2>In your own words</h2><p class='lede'>Short and honest beats long and polished. Skip any that don’t apply. These are for you, so the tool will quote them back to you later.</p>"+
+  WORDS.map(function(w){return "<div class='field'><label for='t_"+w.id+"'>"+esc(w.label)+"</label><textarea id='t_"+w.id+"' data-t='"+w.id+"'>"+esc(S.t[w.id]||"")+"</textarea></div>"}).join("")+foot()+"</div>";
+}
+function gutList(){
+  return "<ol class='rows'>"+S.gut.map(function(k,i){var o=OPT[k];
+    return "<li class='row' style='border-left:6px solid "+o.color+"'><span class='pos'>"+(i+1)+"</span><div class='body'><div class='name'>"+esc(o.short)+"</div><div class='sub'>"+esc(o.code)+"</div></div><div class='ctl'>"+
+    "<button class='ic' type='button' data-act='gut' data-k='"+k+"' data-d='-1' aria-label='Move "+esc(o.short)+" up'"+(i===0?" disabled":"")+">↑</button>"+
+    "<button class='ic' type='button' data-act='gut' data-k='"+k+"' data-d='1' aria-label='Move "+esc(o.short)+" down'"+(i===S.gut.length-1?" disabled":"")+">↓</button></div></li>"}).join("")+"</ol>";
+}
+function riskScale(){
+  var h="<div class='sc' role='group' aria-label='Risk appetite (1 to 5)'>";
+  for(var i=1;i<=5;i++)h+="<button type='button' data-act='risk' data-v='"+i+"' aria-pressed='"+(S.risk===i)+"'>"+i+"</button>";
+  return h+"</div><div class='ends'><span>Safe list first</span><span>Dream first, backups after</span></div>";
+}
+function viewGut(){
+  return "<div class='panel'><h2>Gut check</h2><p class='lede'>Forget the questions and points for a second. If all three had the same entry requirements and you had to pick right now, how would you rank them? Use the arrows.</p>"+
+  gutList()+"<p class='note'>"+(S.gutSet?"Saved.":"Move at least one to lock in your ranking. If the default order is truly your gut, nudge one down and back.")+"</p>"+
+  "<div class='field' style='margin-top:22px'><label for='band'>Roughly what points do you think you’ll get? A guess is fine.</label><select id='band' data-sel='band'>"+
+  BANDS.map(function(b){return "<option value='"+b[0]+"'"+(S.band===b[0]?" selected":"")+">"+esc(b[1])+"</option>"}).join("")+"</select></div>"+
+  "<div class='field'><label>How much risk do you want in your CAO list?</label>"+riskScale()+"</div>"+foot("See my results")+"</div>";
+}
+function viewResults(){
+  var R=compute(),answered=Object.keys(S.a).length,total=ALLQ.length;
+  var h="<div class='panel'><h2>Your results</h2>";
+  if(!answered){return h+"<p class='lede'>You haven’t answered any questions yet. Go back to the Kids step and start rating, and your results will appear here.</p><div class='foot'><button class='btn ghost' type='button' data-act='go' data-i='"+stepIndex("kids")+"'>Go to Kids</button><span></span></div></div>"}
+  h+="<p class='lede'>You’ve answered "+answered+" of "+total+" questions. These scores are conversation starters. They aren’t a decision.</p>";
+  var order=KEYS.filter(function(k){return R[k].score!=null}).sort(function(a,b){return R[b].score-R[a].score});
+  KEYS.slice().sort(function(a,b){return (R[b].score==null?-1:R[b].score)-(R[a].score==null?-1:R[a].score)}).forEach(function(k){
+    var o=OPT[k],r=R[k];
+    if(r.score==null){h+="<div class='score'><h3>"+esc(o.short)+"</h3><p>Not enough answers yet to score this one.</p></div>";return}
+    var worst=r.downs.length?("Weaker match: "+QMAP[r.downs[0].id].short+" (you gave "+r.downs[0].v+" out of 5)"):DEFAULT_RES[k];
+    h+="<div class='score' style='border-top:6px solid "+o.color+"'><header><h3><span class='dot' style='background:"+o.color+"'></span>"+esc(o.short)+"</h3><div class='num'>"+r.score.toFixed(1)+"<small> / 10</small></div></header>"+
+    "<div class='bar'><i style='width:"+(r.score*10)+"%;background:"+o.color+"'></i></div>";
+    if(r.ups.length){h+="<b>Pulling it up</b><ul>"+r.ups.slice(0,3).map(function(u){return "<li>You’re drawn to "+esc(QMAP[u.id].short)+" ("+u.v+" out of 5)</li>"}).join("")+"</ul>"}
+    h+="<b>Biggest reservation</b><ul><li>"+esc(worst)+"</li></ul>";
+    if(r.gate)h+="<div class='callout'><strong>The Irish answers cap this score.</strong><p>Rating Irish at 2 or lower means this course would be a daily struggle against what it demands. If that changes after a week of speaking Irish, answer again.</p></div>";
+    if(r.n<r.tot)h+="<p class='note'>Based on "+r.n+" of "+r.tot+" relevant questions.</p>";
+    h+="</div>";
+  });
+  if(order.length>=2){
+    var top=order[0],second=order[1],gap=R[top].score-R[second].score;
+    h+="<p><b>On paper:</b> "+esc(OPT[top].short)+" fits best, with "+esc(OPT[second].short)+" next."+(gap<0.8?" They’re close, so don’t read the gap as meaningful. That’s what the “Try it” step is for.":"")+"</p>";
+    if(S.gutSet){
+      h+="<p><b>Gut vs answers:</b> "+(S.gut[0]!==top?"Your gut put "+esc(OPT[S.gut[0]].short)+" first, but your answers lean "+esc(OPT[top].short)+". Neither is “right”. Which one surprises you, and why?":"Your gut and your answers agree on "+esc(OPT[top].short)+". That’s encouraging. Test it with the next step.")+"</p>";
+    }
+  }
+  h+="</div>";
+
+  var ch=checks();
+  if(ch.length){h+="<div class='panel'><h2>Let’s poke at your answers</h2><p class='lede'>Places where a reason might not match what the job is really like. Not a telling-off. Just worth a conversation.</p>"+
+    ch.map(function(c){return "<div class='callout'><strong>"+esc(c.t)+"</strong><p>"+esc(c.b)+"</p><p class='ask'>Talk about it: "+esc(c.a)+"</p></div>"}).join("")+"</div>"}
+
+  var wc=wordChecks(),said=WORDS.filter(function(w){return S.t[w.id]&&S.t[w.id].trim()&&/^(why|dealbreakers|dread)/.test(w.id)}).concat(S.t.futureReact&&S.t.futureReact.trim()?[{id:"futureReact",label:"Which parts of the future roadmap made you lean in, and which made you wince?"}]:[]);
+  if(wc.length||said.length){
+    h+="<div class='panel'><h2>Your own words, back to you</h2>";
+    said.forEach(function(w){h+="<p><b>"+esc(w.label)+"</b></p><div class='quote'>"+esc(S.t[w.id])+"</div>";});
+    wc.forEach(function(c){h+="<div class='callout'><strong>"+esc(c.t)+"</strong><p>"+esc(c.b)+"</p></div>"});
+    h+="</div>";
+  }
+
+  var d=parentDiffs();
+  if(d.length){h+="<div class='panel'><h2>Where you two see things differently</h2><p class='lede'>A gap of 2 or more. Neither answer is wrong. Each is information.</p>"+
+    d.map(function(x){return "<div class='callout'><strong>"+esc(x.q.text)+"</strong><p>She said "+x.a+". Parent said "+x.b+".</p></div>"}).join("")+"</div>"}
+  else if(Object.keys(S.pa).length){h+="<div class='panel'><h2>Where you two see things differently</h2><p>Nothing differs by 2 or more so far. Either you’re well aligned, or there are questions the parent hasn’t answered yet.</p></div>"}
+
+  h+="<div class='panel'><h2>Myth and reality</h2>"+
+  "<details><summary>Teaching</summary><p>It’s not nine to three. Planning, correcting, meetings and contact with parents happen outside class time. Many new teachers also start on subbing or temporary contracts before a permanent post, which varies by year and area. Ask a teacher what it looks like now.</p></details>"+
+  "<details><summary>Speech and language therapy</summary><p>Sessions with children can look like play, but the work is clinical: assessing, working out what’s causing a difficulty, tracking evidence, writing reports and working with families and other professionals. Many therapists work mostly with adults, such as after a stroke. Expect anatomy, physiology, neurology and statistics in the degree.</p></details>"+
+  "<details><summary>Marino through Irish</summary><p>B1 is a conversational level, not fluency. The course then runs almost entirely in Irish, including academic reading and writing, and placements are in Irish-medium schools. Check what the qualification allows in English-medium schools, and how the Teaching Council handles it, so you know your options.</p></details>"+
+  "<details><summary>Points</summary><p>Round 1 points in 2026 were about 473 for DC002, 503 for CM003 (including the 40 TEG points, so roughly 463 from the Leaving Cert itself) and 555 for TR007. Those change every year and aren’t predictions. CAO offers you the highest preference you qualify for, so listing a “reach” course first costs you nothing if you list courses you’d also love below it. That’s why the order should follow what you want.</p>"+
+  (S.band?"<p>You guessed "+esc(bandLabel())+". "+(S.risk>=4?"You want a dream-first list, so make sure your backups are courses you’d truly be happy with.":(S.risk<=2?"You want safety near the top, so make sure the careers you most want still appear high enough in your list.":"A balanced mix suits you: a few reaches, a few likely, a few safer."))+"</p>":"")+"</details></div>";
+
+  h+=foot("Try before you decide");
+  return h;
+}
+function bandLabel(){for(var i=0;i<BANDS.length;i++)if(BANDS[i][0]===S.band)return BANDS[i][1].toLowerCase();return ""}
+function viewTry(){
+  var done=TRY.filter(function(t){return S.checks[t.id]}).length;
+  return "<div class='panel'><h2>Try before you decide</h2><p class='lede'>A career on paper and a career at 8:30 on a wet Monday are different. Do a few of these before you fill in the CAO form. "+done+" of "+TRY.length+" done.</p><div class='checks'>"+
+  TRY.map(function(t){var on=!!S.checks[t.id];return "<label><input type='checkbox' data-chk='"+t.id+"'"+(on?" checked":"")+"><span class='"+(on?"done":"")+"'>"+esc(t.t)+"<small>"+esc(t.s)+"</small></span></label>"}).join("")+"</div>"+foot("Build my CAO list")+"</div>";
+}
+function caoRow(id,i,ids){
+  var it=CAOITEMS[id];
+  return "<li class='row'><span class='pos'>"+(i+1)+"</span><div class='body'><div class='name'>"+esc(it.name)+"</div><div class='sub'>"+esc(it.note)+"</div><div>"+it.keeps.map(function(k){return "<span class='chip'>"+esc(KEEPNAMES[k])+"</span>"}).join("")+"</div></div><div class='ctl'>"+
+  "<button class='ic' type='button' data-act='cmove' data-id='"+id+"' data-d='-1' aria-label='Move up'"+(i===0?" disabled":"")+">↑</button>"+
+  "<button class='ic' type='button' data-act='cmove' data-id='"+id+"' data-d='1' aria-label='Move down'"+(i===ids.length-1?" disabled":"")+">↓</button>"+
+  "<button class='ic' type='button' data-act='cdel' data-id='"+id+"' aria-label='Remove from list'>✕</button></div></li>";
+}
+function viewCao(){
+  if(!S.caoInit){S.cao=(S.gutSet?S.gut:orderByScore()).slice();S.caoInit=true;save()}
+  var l8=S.cao.filter(function(x){return CAOITEMS[x].level===8}),l7=S.cao.filter(function(x){return CAOITEMS[x].level===7});
+  var avail=Object.keys(CAOITEMS).filter(function(x){return S.cao.indexOf(x)<0});
+  var h="<div class='panel'><h2>Your provisional CAO list</h2><p class='lede'>CAO has two separate lists: Level 8 and Level 7/6, each up to ten choices. List them in the order you truly prefer, not the order you expect to get. You’re offered the highest-preference course you qualify for. I started it from your gut ranking, if you made one.</p>"+(l8.length>10?"<div class='callout'><strong>Your Level 8 list has "+l8.length+" courses.</strong><p>CAO allows up to 10 per list, so trim it. Remove the ones you’d least want.</p></div>":"")+
+  "<div class='opts' style='margin-top:0'><div class='foot' style='grid-column:1/-1;margin:0'><button class='btn small' type='button' data-act='csuggest'>Suggest backups from my answers</button><span></span></div></div>"+
+  "<h3>Level 8 (honours degrees)</h3>"+(l8.length?"<ol class='rows'>"+l8.map(function(x,i){return caoRow(x,i,l8)}).join("")+"</ol>":"<p class='note'>Nothing here yet.</p>")+
+  "<h3>Level 7 / 6 (a separate list)</h3>"+(l7.length?"<ol class='rows'>"+l7.map(function(x,i){return caoRow(x,i,l7)}).join("")+"</ol>":"<p class='note'>Nothing here yet.</p>");
+  if(avail.length){h+="<h3>Add to your list</h3><ul class='rows'>"+avail.map(function(x){var it=CAOITEMS[x];return "<li class='row'><div class='body'><div class='name'>"+esc(it.name)+"</div><div>"+it.keeps.map(function(k){return "<span class='chip'>"+esc(KEEPNAMES[k])+"</span>"}).join("")+"</div></div><div class='ctl'><button class='btn small' type='button' data-act='cadd' data-id='"+x+"'>Add</button></div></li>"}).join("")+"</ul>"}
+  h+="<p class='note'>Check codes, points and entry requirements for every course on cao.ie and the college’s own site. They change from year to year, and I can’t guarantee the details here are current.</p>";
+  h+="<div class='field'><label for='why'>In your own words: why is your first choice first?</label><textarea id='why' data-why='1'>"+esc(S.why||"")+"</textarea></div>";
+  h+="<div class='panel' style='background:var(--bg)'><h3>Summary to share</h3><p class='note'>Copy this into a message or email, or just read it together.</p><textarea class='summary' id='sum' readonly>"+esc(summaryText())+"</textarea><div class='foot'><button class='btn small' type='button' data-act='copy'>Copy summary</button><button class='btn small ghost' type='button' data-act='reset'>"+(S.resetArm?"Click again to erase everything":"Start over")+"</button></div><p class='note' id='copymsg' aria-live='polite'></p></div>";
+  h+="<div class='foot'><button class='btn ghost' type='button' data-act='back'>Back</button><span></span></div></div>";
+  return h;
+}
+function foot(nextLabel){
+  return "<div class='foot'><button class='btn ghost' type='button' data-act='back'>Back</button><button class='btn' type='button' data-act='next'>"+esc(nextLabel||"Next")+"</button></div>";
+}
+function summaryText(){
+  var R=compute(),L=[];
+  L.push("WHICH WAY? SUMMARY","");
+  L.push("Fit scores (out of 10, from her answers):");
+  KEYS.forEach(function(k){L.push("- "+OPT[k].short+": "+(R[k].score==null?"not enough answers":R[k].score.toFixed(1)))});
+  if(S.gutSet)L.push("","Gut ranking: "+S.gut.map(function(k){return OPT[k].short}).join(" > "));
+  if(S.band)L.push("Points guess: "+bandLabel()+". Risk appetite: "+S.risk+" out of 5 (5 = dream first).");
+  L.push("","Provisional CAO order:");
+  [8,7].forEach(function(lv){var ids=S.cao.filter(function(x){return CAOITEMS[x].level===lv});if(ids.length){L.push(lv===8?"Level 8:":"Level 7/6:");ids.forEach(function(x,i){L.push("  "+(i+1)+". "+CAOITEMS[x].name)})}});
+  if(S.why&&S.why.trim())L.push("","Why the first choice is first: "+S.why.trim());
+  var undone=TRY.filter(function(t){return !S.checks[t.id]});
+  if(undone.length)L.push("","Still to try: "+undone.map(function(t){return t.t.replace(/\.$/,"")}).join("; "));
+  return L.join("\n");
+}
+
+/* ---------- explainer ---------- */
+var WHAT=[
+ {k:"dcu",title:"Primary teacher",course:"Primary Teaching at DCU / St Patrick’s (DC002)",
+  one:"You’re the adult in charge of one class of about 25 children, roughly ages 4 to 12, for a whole school year.",
+  more:["You teach almost every subject yourself: maths, English, Irish, science, history, geography, art, music and PE.","You get to know the same children really well. You’re their teacher, but also their organiser, referee and cheerleader.","The degree is about education and psychology: how children learn, how to teach each subject, and a lot of time in real classrooms.","The course is taught in English. Irish is something you need to have, and something you’ll teach."]},
+ {k:"marino",title:"Primary teacher, through Irish",course:"Primary Teaching through Irish at Marino (CM003)",
+  one:"The same job, but Irish is the language of the classroom, and of almost your whole degree.",
+  more:["You’d teach all the primary subjects in Irish, most likely in a Gaelscoil (an all-Irish school) or a Gaeltacht school (in an area where Irish is the everyday language).","The degree itself is almost entirely in Irish: lectures, reading, essays and all your school placements.","It’s still a teaching degree. Marino says graduates can apply for English-medium jobs too, but the course is built for the Irish-medium sector.","The big extra question: do you love Irish enough to live in it every day, not just do well in it?"]},
+ {k:"tcd",title:"Speech and language therapist",course:"Clinical Speech and Language Studies at Trinity (TR007)",
+  one:"A healthcare professional who helps people who struggle to communicate, or to eat and swallow safely.",
+  more:["Children who are late to talk, hard to understand, who stammer, or who find language hard.","Adults who have lost speech or language after a stroke or brain injury, who live with a neurological condition, or who have trouble swallowing.","The work is: find out what’s going on, work out why, plan a treatment, do the therapy, and involve families, teachers and other professionals.","The degree is a science-and-language degree: anatomy, physiology, psychology, linguistics, phonetics, neurology and statistics, plus clinical placements."]}
+];
+var CONTRAST=[
+ ["Who you work with","A class of about 25 children","A class of about 25 children, in Irish","One person or a small group at a time, children and often adults"],
+ ["What you do all day","Teach the curriculum and manage the room","The same, in Irish","Assess, work out the cause, treat, and track progress"],
+ ["Where you work","Primary schools","Gaelscoileanna and Gaeltacht schools, and others","Clinics, hospitals, schools, community teams, private practice"],
+ ["What you study","Education, psychology and teaching methods","The same, in Irish, plus immersion education","Science, language and clinical practice"],
+ ["Language of the course","English","Irish, almost entirely","English"],
+ ["Qualification, then registration","Bachelor of Education, then the Teaching Council","The same","BSc (Clin. Lang.), then CORU"],
+ ["Often feels like","Busy, social, lots of things at once, a clear school-day rhythm","The same, with Irish all around you","Focused, problem-solving, more one-to-one, more science"]
+];
+var GLOSS=[
+ {h:"Applying and points",items:[
+  ["CAO","The Central Applications Office. It’s the one system for applying to most college courses in Ireland. You make two lists, Level 8 and Level 7/6, with up to 10 courses each, in the order you prefer them. You’re offered the highest one you qualify for."],
+  ["Course codes (DC002, CM003, TR007)","Two letters for the college plus three numbers for the course. DC is DCU, CM is Marino, TR is Trinity. CK is UCC, GY is Galway, LM is Limerick."],
+  ["CAO points","Your best six Leaving Cert subjects turned into points. The maximum is 600, or 625 with the Higher Level Maths bonus."],
+  ["Round 1 points (the “cut-off”)","Courses don’t set a points requirement. Demand does. The Round 1 figure is the score of the last person who got an offer in the first round that year. It moves every year, so it’s a guide, not a promise."],
+  ["Leaving Cert grades (H3, O6, H6)","H means Higher Level and O means Ordinary Level. The number is the grade. At Higher Level, H1 is 90 to 100%, H2 is 80 to 89%, H3 is 70 to 79%, H4 is 60 to 69%, H5 is 50 to 59% and H6 is 40 to 49%."],
+  ["Minimum entry requirements","Subjects and grades you need on top of the points, for example Irish at H3 for Marino, or Maths at O6/H6 for Trinity. You can have the points and still not qualify if you miss one."],
+  ["Level 8, Level 7/6","Level 8 is an honours degree, usually 3 or 4 years. Level 7 is an ordinary degree, and Level 6 is a higher certificate. All three of your courses are Level 8."],
+  ["Gaeltacht applicants (DC003, CM004)","Separate entry routes for students from designated Gaeltacht areas. They’re restricted entry, so most applicants use the main code."],
+  ["HEAR and DARE","Access schemes. Eligible students can get a place with reduced points."]]},
+ {h:"Irish",items:[
+  ["TEG B1","Teastas Eorpach na Gaeilge, an Irish exam set against a European scale. B1 is an everyday, independent level: you can hold a conversation and handle familiar situations. It isn’t fluency. Marino requires a pass (50%) and gives a flat 40 CAO points for it."],
+  ["Gaelscoil","An all-Irish primary school, where children are taught every subject through Irish, often outside the Gaeltacht."],
+  ["Gaeltacht","A region where Irish is the everyday community language. Gaeltacht schools teach through Irish."],
+  ["Immersion education","Teaching school subjects through a second language so children learn the language by using it. A Marino module covers how to do this."],
+  ["Medium of instruction","The language a course is taught in. DC002 and TR007 are in English. CM003 is in Irish."]]},
+ {h:"Teaching",items:[
+  ["School placement","Supervised blocks of real teaching in a school during the degree. You teach real classes while a mentor watches."],
+  ["Teaching Council","The regulator for teachers in Ireland. You register with it after graduating to teach in recognised schools."],
+  ["Droichead","The induction process for newly qualified teachers. You’re supported by a mentor teacher in your school before you’re fully signed off."],
+  ["Substitute and supply panel","Covering classes when teachers are absent. A lot of new teachers do this before landing a full post."],
+  ["Permanent contract","A job with no end date. Rules announced in 2025 let a teacher reappointed to the same viable post after one year get one."],
+  ["PME (Professional Master of Education)","A postgraduate route into teaching. You do a degree first, then the PME. DCU and Marino both run a primary version."]]},
+ {h:"Speech and language therapy",items:[
+  ["CORU","The regulator for health and social care professionals, including speech and language therapists. You need to register to work as one."],
+  ["IASLT","The Irish Association of Speech and Language Therapists, the professional body that accredits courses with CORU."],
+  ["HSE","The Health Service Executive, Ireland’s public health service and a main employer of therapists."],
+  ["Staff grade and senior grade","Pay and responsibility levels in the HSE. You start at staff grade, and senior grade means more experience and supervising others."],
+  ["Caseload","The group of people you’re responsible for at any one time."],
+  ["Dysphagia","Difficulty swallowing. It’s a big part of therapy in hospitals, for example after a stroke."],
+  ["Aphasia","Difficulty with language, such as finding words or understanding, usually after a stroke or brain injury."],
+  ["Phonetics and linguistics","Phonetics is the science of speech sounds. Linguistics is the science of how language is built and used."],
+  ["Clinical placement","Supervised work with real clients in a clinic, hospital or school as part of the degree."]]}
+];
+function viewExplain(){
+  var h="<div class='panel'><h2>What are these courses?</h2><p class='lede'>Three degrees, three different jobs. Before any facts, here is what each one actually is, in plain words.</p>"+
+  WHAT.map(function(w){return "<div class='what' style='border-top-color:"+OPT[w.k].color+"'><h3>"+esc(w.title)+"</h3><div class='note'>"+esc(w.course)+"</div><p class='one'>"+esc(w.one)+"</p><ul>"+w.more.map(function(m){return "<li>"+esc(m)+"</li>"}).join("")+"</ul></div>"}).join("")+"</div>";
+  h+="<div class='panel big3'><h2>The three big questions</h2><p><b>Teaching:</b> would you enjoy having your own class of about 25 children, seeing them every day, teaching many subjects, managing a classroom and building relationships with the same children over a school year?</p><p><b>Speech and language therapy:</b> would you prefer working one-to-one or with small groups, assessing a particular communication difficulty, understanding what’s causing it, making a treatment plan and working with the person?</p><p><b>Marino through Irish:</b> on top of wanting to be a teacher, do you love Irish enough to enjoy studying and working through it every day?</p><p class='note'>The rest of this workbook is built to help you answer these honestly.</p></div>";
+  h+="<div class='panel'><h2>Side by side</h2><div class='scroll'><table class='cmp'><thead><tr><th></th>"+KEYS.map(function(k){return "<th>"+esc(OPT[k].short)+"</th>"}).join("")+"</tr></thead><tbody>"+CONTRAST.map(function(r){return "<tr><th>"+esc(r[0])+"</th><td>"+esc(r[1])+"</td><td>"+esc(r[2])+"</td><td>"+esc(r[3])+"</td></tr>"}).join("")+"</tbody></table></div><p class='note' style='margin-top:10px'>Each degree is also a professional qualification. Finishing it lets you register and work in that profession directly, which is different from a general degree. A teaching degree doesn’t qualify you as a therapist, and the other way round.</p></div>";
+  h+="<div class='panel'><h2>What the words mean</h2><p class='lede'>Open any group. You’ll see these words on the course pages and in the rest of this workbook.</p>"+
+  GLOSS.map(function(g){return "<details><summary>"+esc(g.h)+"</summary><dl class='gl'>"+g.items.map(function(i){return "<dt>"+esc(i[0])+"</dt><dd>"+esc(i[1])+"</dd>"}).join("")+"</dl></details>"}).join("")+"</div>";
+  return h+foot("See the courses");
+}
+
+/* ---------- courses + future ---------- */
+function stepIndex(id){for(var i=0;i<STEPS.length;i++)if(STEPS[i].id===id)return i;return 0}
+function A(l,u){return "<a href='"+esc(u)+"' target='_blank' rel='noopener noreferrer'>"+esc(l)+"</a>"}
+
+var COURSES={
+ dcu:{big:"473",unit:"points, 2026 Round 1",rows:[["Code","DC002"],["Length","4 years, honours degree"],["Where","DCU, Drumcondra, Dublin"],["Taught in","English"]],
+  sections:[
+   {h:"What you’d study",items:["How children learn, how to teach the whole primary curriculum, and school placements in primary schools.","In Year 1 you pick up to three options from Gaeilge, Mathematics, Music, Inclusive and Special Education, SPHE and Wellbeing, Science Education and Religious Studies (DCU’s 2026 prospectus).","DCU says it is the only undergraduate primary degree with a major specialism module from Year 2."]},
+   {h:"What you’d become",items:["A registered primary teacher. The degree lets you register with the Teaching Council.","DCU also lists educational administration, principal, researcher and school inspector among the routes this degree opens."]},
+   {h:"Entry",items:["Irish is an entry requirement, but the course is taught in English. Check the exact grades on DCU’s page.","There are separate restricted-entry versions for Gaeltacht applicants (DC003) and the Church of Ireland Centre (DC004)."]},
+   {h:"Another way in",items:["Any Level 8 degree followed by the Professional Master of Education (Primary), which DCU runs as DC970. Longer, but it keeps the door open if you miss the points."]},
+   {h:"Good to know",items:["New teachers often start on substitute or temporary work. Under rules announced in 2025, a teacher reappointed to the same viable post after one year can get a permanent contract."]}
+  ]},
+ marino:{big:"503",unit:"points incl. 40 for TEG B1, 2026",rows:[["Code","CM003 (CM004 for Gaeltacht applicants)"],["Length","4 years, honours degree"],["Where","Marino Institute of Education, Griffith Avenue, Dublin"],["Taught in","Irish, including all school placements"]],
+  sections:[
+   {h:"What you’d study",items:["Immersion education, early childhood education, how children learn, psychology, sociolinguistics, and methods for teaching all primary subjects through Irish.","A two-week Gaeltacht placement at Easter in Years 1 and 2, and every school placement through Irish."]},
+   {h:"What you’d become",items:["A registered primary teacher, especially suited to Gaelscoileanna and Gaeltacht schools.","Marino says graduates can also apply for English-medium teaching posts."]},
+   {h:"Entry",items:["Irish H3 and TEG B1 (a pass is 50%). Marino’s page for a recent year lists English and Maths at H7/O4, so confirm 2027 requirements.","Passing TEG B1 adds a flat 40 points, with nothing extra for a higher mark. Marino refunds the exam fee if you pass and register on the course.","The TEG exam has been in late February in recent years (21 and 22 February in 2025). Look up the 2027 date and how to register now."]},
+   {h:"Points",items:["503 in 2026 including the 40 TEG points, which is roughly 463 from the Leaving Cert itself. 502 in 2025 and 507 in 2024."]},
+   {h:"Context and alternatives",items:["The course began in 2020, and the Government added 30 places in 2023.","Marino also runs an English-medium primary degree, CM001 (462 points in 2026), and a PME (Primary) with an Irish-medium stream that needs at least 65% in the TEG B1 oral."]}
+  ]},
+ tcd:{big:"555",unit:"points, 2026",rows:[["Code","TR007"],["Length","4 years, 34 places"],["Where","Trinity College Dublin"],["Qualification","BSc (Clin. Lang.), speech and language therapy"]],
+  sections:[
+   {h:"What you’d study",items:["Anatomy, physiology, psychology, linguistics, phonetics, neuropsychology and neurology, statistics, swallowing disorders and evidence-based clinical practice.","Taught through lectures, problem-based and case-based learning, and clinical practice (Trinity)."]},
+   {h:"Placements",items:["Clinical placements in hospitals, clinics and schools.","The clinical requirements mean no study abroad at undergraduate level (Trinity)."]},
+   {h:"What you’d become",items:["A speech and language therapist. Graduates are eligible to register with CORU, and the course is recognised in Ireland and the UK (Trinity)."]},
+   {h:"Entry",items:["Trinity lists Maths at O6/H6 among its requirements. Read the full requirements early.","There is no graduate-entry route. HEAR and DARE can reduce the points needed."]},
+   {h:"Points",items:["555 in 2026. Earlier years: 541 (2025), 564 (2024), 545 (2023)."]},
+   {h:"The same career elsewhere",items:["University College Cork, CK705: 555 in 2026 (random selection among those on that score).","University of Galway, GY503: 542 in 2026.","University of Limerick, LM106: 544 in 2026. New that year, so check its CORU approval status.","Subject requirements differ. Galway’s list, for example, includes a lab science and another language."]}
+  ]}
+};
+var LINKS={
+ dcu:[["DCU course page","https://www.dcu.ie/courses/undergraduate/institute-education/bachelor-education-primary-teaching"],["DCU: all primary teaching routes, including the PME","https://www.dcu.ie/studentrecruitment/education"],["Qualifax listing","https://www.qualifax.ie/course/110197"],["Teaching Council: Droichead induction","https://teachingcouncil.ie/register/droichead/the-droichead-process-primary"]],
+ marino:[["Marino course page","https://www.mie.ie/study_with_us/undergraduate_programmes/bachelor_in_education_through_the_medium_of_irish_primary_teaching/"],["Marino: the TEG B1 requirement","https://www.mie.ie/study_with_us/undergraduate_programmes/bachelor_in_education_through_the_medium_of_irish_primary_teaching_/cailiocht_teg_leibheal_b1"],["TEG: information for Marino applicants","https://www.teg.ie/info-advice/teg-marino-institute-of-education-bed-through-the-medium-of-irish.962.html"]],
+ tcd:[["Trinity course page","https://www.tcd.ie/courses/undergraduate/courses/clinical-speech-and-language-studies"],["Department of Clinical Speech and Language Studies","https://www.tcd.ie/slscs/undergraduate/clinical-speech-and-language-studies/"],["What each year involves","https://tcd.ie/slscs/undergraduate/clinical-speech-language"],["UCC CK705","https://www.ucc.ie/en/ck705/"],["Galway GY503","https://www.universityofgalway.ie/courses/undergraduate-courses/speech-and-language-therapy.html"],["Limerick LM106 (Qualifax)","https://www.qualifax.ie/course/224064"],["Irish Association of Speech and Language Therapists","https://www.iaslt.ie"]]
+};
+var ALT=[
+ ["Primary teaching","DCU, DC002","473",""],
+ ["Primary teaching","Mary Immaculate College, Limerick, MI005","475",""],
+ ["Primary teaching","Maynooth University (Froebel), MH001","495","https://www.maynoothuniversity.ie/froebel-department-primary-and-early-childhood-education"],
+ ["Primary teaching","Marino, in English, CM001","462",""],
+ ["Primary teaching with psychology","Mary Immaculate, Education and Psychology, MI008","554",""],
+ ["Through Irish","Marino, CM003","503 (incl. 40 TEG)","https://www.mie.ie/study_with_us/undergraduate_programmes/bachelor_in_education_through_the_medium_of_irish_primary_teaching/"],
+ ["Speech and language therapy","Trinity, TR007","555","https://www.tcd.ie/courses/undergraduate/courses/clinical-speech-and-language-studies"],
+ ["Speech and language therapy","UCC, CK705","555*","https://www.ucc.ie/en/ck705/"],
+ ["Speech and language therapy","Galway, GY503","542","https://www.universityofgalway.ie/courses/undergraduate-courses/speech-and-language-therapy.html"],
+ ["Speech and language therapy","Limerick, LM106","544","https://www.qualifax.ie/course/224064"]
+];
+var DATES=[
+ "CAO: for 2026 entry, the discounted application closed on 20 January and the normal fee applied after that. Check cao.ie for the exact 2027 dates, and don’t leave it late.",
+ "TEG B1 (Marino only): recent exams were in late February. Look up the 2027 date and registration now, and ask Marino what happens if you aren’t ready.",
+ "Subject requirements: read every course page. Trinity lists Maths at O6/H6, and some speech and language therapy courses list a lab science and another language. If something is missing, you’ll want to know now.",
+ "Points move every year, sometimes by 20 or more. Last year’s number is a guide to how competitive a course is, not your cut-off.",
+ "HEAR and DARE: if either might apply to you, check it. Some of these courses reserve places with reduced points."
+];
+
+function viewCourses(){
+  var c=COURSES[S.ctab]||COURSES.dcu;
+  var h="<div class='panel'><h2>The three courses</h2><p class='lede'>The facts first, from the colleges’ own pages and the official 2026 CAO Round 1 points. Details change, so use the links to confirm anything you’re relying on.</p><div class='glance'>"+
+  KEYS.map(function(k){var d=COURSES[k],o=OPT[k];return "<div class='g' style='border-top-color:"+o.color+"'><b>"+esc(o.short)+"</b><div class='big'>"+esc(d.big)+"<small>"+esc(d.unit)+"</small></div><dl>"+d.rows.map(function(r){return "<dt>"+esc(r[0])+"</dt><dd>"+esc(r[1])+"</dd>"}).join("")+"</dl></div>"}).join("")+"</div>"+
+  "<div class='tabs' role='group' aria-label='Choose a course'>"+KEYS.map(function(k){return "<button type='button' data-act='ctab' data-k='"+k+"' aria-pressed='"+(S.ctab===k)+"'>"+esc(OPT[k].short)+"</button>"}).join("")+"</div>"+
+  "<div class='kv'>"+c.sections.map(function(s){return "<h3>"+esc(s.h)+"</h3><ul>"+s.items.map(function(i){return "<li>"+esc(i)+"</li>"}).join("")+"</ul>"}).join("")+"<h3>Links</h3><div class='links'>"+LINKS[S.ctab].map(function(a){return A(a[0],a[1])}).join("")+"</div></div></div>";
+
+  h+="<div class='panel'><h2>The same careers, other doors</h2><p class='lede'>If a course doesn’t happen, or you want a wider list, these keep the same careers open. 2026 Round 1 points. * means not everyone on that score got an offer.</p><div class='scroll'><table class='cmp'><thead><tr><th>Career</th><th>Course</th><th>Points</th><th></th></tr></thead><tbody>"+
+  ALT.map(function(r){return "<tr><td>"+esc(r[0])+"</td><td>"+esc(r[1])+"</td><td>"+esc(r[2])+"</td><td>"+(r[3]?A("Link",r[3]):"")+"</td></tr>"}).join("")+"</tbody></table></div>"+
+  "<div class='links'>"+A("Full 2026 Level 8 points list (CAO via Qualifax)","https://www.qualifax.ie/sites/default/files/2026-08/CAO%20Round%201%20Points%20Level%208%202026.pdf")+A("CAO","https://www.cao.ie")+"</div></div>";
+
+  h+="<div class='panel'><h2>Dates and checks for 6th year</h2><ul class='kv' style='padding-left:1.2em'>"+DATES.map(function(d){return "<li style='margin:.5em 0'>"+esc(d)+"</li>"}).join("")+"</ul></div>";
+  return h+foot("Show me the future");
+}
+
+var FUT=[
+ {when:"Sept 2027 to 2029",sub:"College, years 1 and 2 (age 18 to 20)",
+  dcu:"Learning how children learn and how to teach the whole primary curriculum. You choose options such as Gaeilge, maths, music or inclusive and special education. First blocks in primary schools, and student life in Drumcondra.",
+  marino:"The same core teaching, but in Irish: lectures, reading and essays. A two-week Gaeltacht placement at Easter each year, and school placements in Irish-medium schools.",
+  tcd:"Anatomy, physiology, psychology, phonetics and linguistics. A fixed professional course with case-based learning, in a year of about 34 students."},
+ {when:"2029 to 2031",sub:"College, years 3 and 4 (age 20 to 22)",
+  dcu:"Longer placements where you teach more of the day, plus your specialism. By the end you have taught real classes.",
+  marino:"Longer placements through Irish, building the confidence to run a class in Irish all day.",
+  tcd:"Clinical placements in hospitals, clinics and schools, working with real clients under supervision, and evidence-based practice. No year abroad."},
+ {when:"2031",sub:"Graduating (age 22)",
+  dcu:"Register with the Teaching Council and apply to schools. Many start on substitute or temporary contracts. Under the 2025 rules, a teacher reappointed to the same viable post after a year can get a permanent contract.",
+  marino:"Register with the Teaching Council. The degree suits Gaelscoileanna and Gaeltacht schools, and Marino says you can apply for English-medium jobs too.",
+  tcd:"Register with CORU and apply for staff grade posts, for example in HSE community teams, children’s disability teams or hospitals. HSE campaigns have been open to graduating students."},
+ {when:"2032 to 2034",sub:"First years working (age 23 to 25)",
+  dcu:"Your own class, maybe junior infants one year and sixth class the next, with a Droichead induction and a mentor in your school. Planning and marking become routine.",
+  marino:"Teaching every subject through Irish. Irish becomes the language of your working day with pupils, parents and colleagues.",
+  tcd:"Building a caseload under a senior therapist’s supervision. Patterns start to show: do you gravitate to young children or adults, hospital or community?"},
+ {when:"Around 2037",sub:"Age 30",
+  dcu:"An experienced class teacher. Options include special education or learning support, a promotion post, or a year teaching abroad. Pay is still climbing a long scale.",
+  marino:"The same options, plus roles that lean on your Irish, such as leading Irish across a school or working in the Gaeltacht sector.",
+  tcd:"Senior therapist, supervising students and newer colleagues (the HSE senior scale was about €64.5k to €76k in 2026), with a specialism such as swallowing, stroke, early years or disability."},
+ {when:"Around 2047",sub:"Age 40",
+  dcu:"Deputy principal, principal, school inspector, education researcher or another education career. DCU lists these as routes, and many teachers simply stay in the classroom for good reasons.",
+  marino:"Principal of an Irish-medium school, a role in Irish-language education, or still happily in the classroom.",
+  tcd:"Clinical specialist, manager, researcher or lecturer, private practice, or a long clinical career you love."}
+];
+var DAYS=[
+ {k:"dcu",title:"A Tuesday as a primary teacher",items:["8:30  Set up the classroom and check today’s plan.","9:00  Roll call, then maths with about 25 children at very different levels.","10:45  Yard duty.","11:15  English, then Irish, in small groups while you move around the room.","1:00  Science or art, then PE.","2:00  Children leave. A quick word with a parent at the door.","2:30 to 5:00  Planning, correcting, a staff meeting and emails."]},
+ {k:"marino",title:"A Tuesday as a teacher in an Irish-medium school",items:["The same day shape as above, but Irish is the language of everything: lessons, yard, staffroom and notes home.","You’d be the Irish-speaking adult many children hear most. That’s a joy for some people and a weight for others."]},
+ {k:"tcd",title:"A Tuesday as a speech and language therapist",items:["8:45  Team meeting with the occupational therapist, physiotherapist and psychologist.","9:30  Assess a three-year-old with a language delay, with a parent in the room.","11:00  A therapy session using a game to practise sounds, noting what works.","12:30  Lunch, then writing up the assessment.","1:30  Depending on your service: a swallowing assessment for an adult after a stroke, or a school visit.","3:30  Reports, goals for the family, a phone call to the child’s teacher.","4:30  Caseload and waiting-list decisions."]}
+];
+var MONEY=[
+ ["Pay at the start","Starts at the bottom of the new-entrant primary scale, in the mid-€40,000s (2026).","The same scale.","Starts at the bottom of the HSE staff grade scale, which ran about €45.5k to €65k in mid-2026."],
+ ["Pay later","A long scale. It takes many years to reach the top, in the low to mid €80,000s.","The same.","Senior grade ran about €64.5k to €76k (HSE job ads, early 2026), with further grades above."],
+ ["Hours and holidays","School-year pattern with long breaks. Planning, marking and meetings spill beyond the school day.","The same.","Posts I found were advertised at 35 hours a week with standard HSE annual leave, not school holidays."],
+ ["Registered with","Teaching Council","Teaching Council","CORU"],
+ ["First job","Substitute, temporary or permanent post in a primary school, with Droichead induction.","Irish-medium or English-medium schools, with Droichead induction.","Staff grade post in HSE or a voluntary service. Campaigns have been open to graduating students."]
+];
+function viewFuture(){
+  var h="<div class='panel'><h2>What it could look like</h2><p class='lede'>Three lives from the same starting line. These are possibilities drawn from course pages, job ads and pay scales, not promises. Read across a row to compare the same age.</p>";
+  FUT.forEach(function(r){
+    h+="<div class='tl'><div class='when'>"+esc(r.when)+"<small>"+esc(r.sub)+"</small></div><div class='lanes'>"+KEYS.map(function(k){return "<div class='lane' style='border-left-color:"+OPT[k].color+"'><b>"+esc(OPT[k].short)+"</b>"+esc(r[k])+"</div>"}).join("")+"</div></div>";
+  });
+  h+="</div><div class='panel'><h2>A day in each, imagined</h2><p class='lede'>A made-up composite, not data. Real days depend on the school or service. Ask yourself which one you’d rather walk into at 8:30 on a wet Monday.</p>"+
+  DAYS.map(function(d){return "<div class='day' style='border-top-color:"+OPT[d.k].color+"'><h3>"+esc(d.title)+"</h3><ul>"+d.items.map(function(i){return "<li>"+esc(i)+"</li>"}).join("")+"</ul></div>"}).join("")+"</div>";
+  h+="<div class='panel'><h2>Money, time and registration</h2><div class='scroll'><table class='cmp'><thead><tr><th></th>"+KEYS.map(function(k){return "<th>"+esc(OPT[k].short)+"</th>"}).join("")+"</tr></thead><tbody>"+
+  MONEY.map(function(r){return "<tr><th>"+esc(r[0])+"</th><td>"+esc(r[1])+"</td><td>"+esc(r[2])+"</td><td>"+esc(r[3])+"</td></tr>"}).join("")+"</tbody></table></div>"+
+  "<p class='note' style='margin-top:10px'>Pay scales change with public-sector agreements, so treat these as a rough guide. Sources:</p><div class='links'>"+
+  A("Dept of Education circular on primary teacher pay, June 2026","https://www.gov.ie/en/department-of-education/circulars/circular-0055-2026-primary-teacher-salaries-effective-from-1st-june-2026/")+
+  A("Permanent contracts after one year","https://www.gov.ie/en/department-of-education/press-releases/minister-mcentee-announces-new-policy-measures-to-boost-teacher-supply-including-permanent-contracts-after-one-year")+
+  A("Droichead induction","https://teachingcouncil.ie/register/droichead/the-droichead-process-primary")+"</div></div>";
+  h+="<div class='panel'><h2>Your reaction</h2><div class='field'><label for='fr'>Which parts of the roadmap made you lean in, and which made you wince? Be specific.</label><textarea id='fr' data-t='futureReact'>"+esc(S.t.futureReact||"")+"</textarea></div>"+foot("Start the questions")+"</div>";
+  return h;
+}
+
+/* ---------- render ---------- */
+function render(keepScroll){
+  var cur=STEPS[S.step],stepsEl=$("#steps");
+  stepsEl.innerHTML=STEPS.map(function(s,i){return "<button type='button' data-act='go' data-i='"+i+"'"+(i===S.step?" aria-current='step'":"")+(i<S.step?" class='done'":"")+">"+esc(s.label)+"</button>"}).join("");
+  var m=$("#main"),sec=null;
+  SECTIONS.forEach(function(s){if(s.id===cur.id)sec=s});
+  var html;
+  if(cur.id==="welcome")html=viewWelcome();
+  else if(cur.id==="explain")html=viewExplain();
+  else if(cur.id==="courses")html=viewCourses();
+  else if(cur.id==="future")html=viewFuture();
+  else if(sec)html=viewSection(sec);
+  else if(cur.id==="words")html=viewWords();
+  else if(cur.id==="gut")html=viewGut();
+  else if(cur.id==="results")html=viewResults();
+  else if(cur.id==="try")html=viewTry();
+  else html=viewCao();
+  m.innerHTML=html;
+  document.querySelectorAll(".mode button").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-v")===S.mode))});
+  var active=stepsEl.querySelector("[aria-current]");if(active&&active.scrollIntoView)try{active.scrollIntoView({inline:"center",block:"nearest"})}catch(e){}
+  if(!keepScroll)window.scrollTo(0,0);
+}
+function go(i){S.step=Math.max(0,Math.min(STEPS.length-1,i));S.resetArm=false;save();render()}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");if(!el)return;
+  var act=el.getAttribute("data-act");
+  if(act==="go")return go(+el.getAttribute("data-i"));
+  if(act==="next")return go(S.step+1);
+  if(act==="back")return go(S.step-1);
+  if(act==="ctab"){S.ctab=el.getAttribute("data-k");save();return render(true)}
+  if(act==="mode"){S.mode=el.getAttribute("data-v");save();return render(true)}
+  if(act==="scale"){
+    var id=el.getAttribute("data-q"),v=+el.getAttribute("data-v");ans()[id]=v;save();
+    el.parentNode.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b===el))});return;
+  }
+  if(act==="risk"){S.risk=+el.getAttribute("data-v");save();el.parentNode.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-pressed",String(b===el))});return}
+  if(act==="gut"){
+    var k=el.getAttribute("data-k"),d=+el.getAttribute("data-d"),i=S.gut.indexOf(k),j=i+d;
+    if(j<0||j>=S.gut.length)return;var t=S.gut[i];S.gut[i]=S.gut[j];S.gut[j]=t;S.gutSet=true;S.caoInit=false;save();render(true);
+    var nb=document.querySelector("[data-act='gut'][data-k='"+k+"'][data-d='"+d+"']");if(nb&&!nb.disabled)nb.focus();else{var other=document.querySelector("[data-act='gut'][data-k='"+k+"']:not([disabled])");if(other)other.focus()}
+    return;
+  }
+  if(act==="cmove"){
+    var cid=el.getAttribute("data-id"),dd=+el.getAttribute("data-d"),lvl=CAOITEMS[cid].level;
+    var ids=S.cao.filter(function(x){return CAOITEMS[x].level===lvl}),ii=ids.indexOf(cid),jj=ii+dd;
+    if(jj<0||jj>=ids.length)return;
+    var a=S.cao.indexOf(ids[ii]),b=S.cao.indexOf(ids[jj]),tmp=S.cao[a];S.cao[a]=S.cao[b];S.cao[b]=tmp;save();render(true);
+    var f=document.querySelector("[data-act='cmove'][data-id='"+cid+"'][data-d='"+dd+"']");if(f&&!f.disabled)f.focus();return;
+  }
+  if(act==="cdel"){S.cao=S.cao.filter(function(x){return x!==el.getAttribute("data-id")});save();return render(true)}
+  if(act==="cadd"){S.cao.push(el.getAttribute("data-id"));save();return render(true)}
+  if(act==="csuggest"){
+    var add=[];function want(x){if(S.cao.indexOf(x)<0&&add.indexOf(x)<0)add.push(x)}
+    var kk=Math.max(g("k1")||0,g("k2")||0),sc=Math.max(g("s1")||0,g("s2")||0);
+    if(kk>=4||(!kk&&!sc)){want("mic005");want("froebel");want("mic008")}
+    if(sc>=3||(!kk&&!sc)){want("ucc");want("gal");want("ul")}
+    if((g("i1")||0)>=4)want("artsIrish");
+    want("ece7");
+    S.cao=S.cao.concat(add);save();return render(true);
+  }
+  if(act==="copy"){
+    var ta=$("#sum"),msg=$("#copymsg");ta.select();
+    var ok=false;try{ok=document.execCommand&&document.execCommand("copy")}catch(err){}
+    if(!ok&&navigator.clipboard){navigator.clipboard.writeText(ta.value).then(function(){msg.textContent="Copied."},function(){msg.textContent="Couldn’t copy automatically. The text is selected, so press Ctrl+C or Cmd+C."});return}
+    msg.textContent=ok?"Copied.":"Couldn’t copy automatically. The text is selected, so press Ctrl+C or Cmd+C.";return;
+  }
+  if(act==="reset"){
+    if(!S.resetArm){S.resetArm=true;return render(true)}
+    try{localStorage.removeItem(STORE)}catch(err){}
+    S={step:0,mode:"me",a:{},pa:{},t:{},gut:KEYS.slice(),gutSet:false,ctab:"dcu",band:"",risk:3,cao:[],caoInit:false,checks:{},why:"",resetArm:false};render();
+  }
+});
+document.addEventListener("input",function(e){
+  var el=e.target;
+  if(el.hasAttribute("data-t")){S.t[el.getAttribute("data-t")]=el.value;save()}
+  else if(el.hasAttribute("data-why")){S.why=el.value;save();var s=$("#sum");if(s)s.value=summaryText()}
+});
+document.addEventListener("change",function(e){
+  var el=e.target;
+  if(el.hasAttribute("data-sel")){S.band=el.value;save()}
+  else if(el.hasAttribute("data-chk")){S.checks[el.getAttribute("data-chk")]=el.checked;save();render(true)}
+});
+
+render();
+})();
+</script>
+</body>
+</html>
